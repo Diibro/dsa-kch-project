@@ -1,0 +1,6 @@
+build/
+kch_phase1
+test_phase1
+*.zip
+.DS_Store
+docs/
