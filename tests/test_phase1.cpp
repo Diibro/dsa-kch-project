@@ -1,8 +1,6 @@
-// ============================================================
 // KCH-PMTS  |  Phase 1 automated unit tests (Modules 1 & 2)
 // Each check prints [PASS] or [FAIL]. A summary is printed at the end.
 // Exit code is 0 when everything passes, 1 otherwise (used by `make test`).
-// ============================================================
 #include <iostream>
 #include <string>
 
@@ -53,9 +51,7 @@ static void buildSpecHeap(PriorityQueue& pq) {
      }
 }
 
-// ============================================================
 // MODULE 1 TESTS
-// ============================================================
 static void testDoctorArray() {
      testGroup("Module 1 | Doctor array insertion");
      Doctor roster[MAX_DOCTORS];
@@ -162,9 +158,7 @@ static void testNurseList() {
             "releaseNurseTeam frees all nodes and resets the list");
 }
 
-// ============================================================
 // MODULE 2 TESTS
-// ============================================================
 static void testHeapIndexes() {
      testGroup("Module 2 | Index mapping formulas");
      verify(parent(1) == 0 && parent(2) == 0 && parent(5) == 2 && parent(6) == 2,
@@ -249,6 +243,32 @@ static void testHeapEdgeCases() {
      pq_insert(&packedQ, overflowCase);
      unmuteOutput();
      verify(packedQ.patientCount == MAX_PATIENTS, "insert into full queue is rejected");
+
+
+     testGroup("Module 2 | Acuity range validation");
+     PriorityQueue rangeQ;
+     Patient tooLow;
+     tooLow.patientID = 1;
+     tooLow.acuityScore = 0;
+     Patient tooHigh;
+     tooHigh.patientID = 2;
+     tooHigh.acuityScore = 101;
+     muteOutput();
+     pq_insert(&rangeQ, tooLow);
+     pq_insert(&rangeQ, tooHigh);
+     unmuteOutput();
+     verify(rangeQ.patientCount == 0, "acuity 0 and 101 are rejected");
+
+     Patient lowEdge;
+     lowEdge.patientID = 3;
+     lowEdge.acuityScore = 1;
+     Patient highEdge;
+     highEdge.patientID = 4;
+     highEdge.acuityScore = 100;
+     pq_insert(&rangeQ, lowEdge);
+     pq_insert(&rangeQ, highEdge);
+     verify(rangeQ.patientCount == 2 && rangeQ.patientHeap[0].acuityScore == 100,
+            "boundary acuities 1 and 100 are accepted");
 
      testGroup("Module 2 | Heapsort (in place)");
      PriorityQueue sortQ;
