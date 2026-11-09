@@ -1,17 +1,13 @@
-// ============================================================
 // KCH-PMTS  |  Module 2 : Emergency Room Triage Engine (Max-Heap)
 // Rule kept at all times ("max-heap dominance"):
 //   every parent's acuityScore >= its children's acuityScore
-// ============================================================
 #include <iostream>
 #include <iomanip>
 #include "module2_triage.h"
 
 bool triageTraceOn = false;
 
-// ------------------------------------------------------------
 // Index mapping for a 0-indexed array heap
-// ------------------------------------------------------------
 int parent(int i) { return (i - 1) / 2; }
 int left_child(int i) { return 2 * i + 1; }
 int right_child(int i) { return 2 * i + 2; }
@@ -23,11 +19,9 @@ static void swapPatients(PriorityQueue* pq, int firstPos, int secondPos) {
      pq->patientHeap[secondPos] = holder;
 }
 
-// ------------------------------------------------------------
 // bubble_up (sift-up), recursive
 // While the node is more urgent than its parent, swap them and continue
 // from the parent's position.  Stops at the root (index 0).
-// ------------------------------------------------------------
 void bubble_up(PriorityQueue* pq, int index) {
      if (index == 0) {
           return; // reached the root: nothing above it
@@ -46,11 +40,9 @@ void bubble_up(PriorityQueue* pq, int index) {
      }
 }
 
-// ------------------------------------------------------------
 // bubble_down (sift-down), recursive
 // Compare the node with its two children, pick the largest of the three.
 // If a child is larger, swap with it and continue from that child.
-// ------------------------------------------------------------
 void bubble_down(PriorityQueue* pq, int index) {
      int leftPos = left_child(index);
      int rightPos = right_child(index);
@@ -77,13 +69,19 @@ void bubble_down(PriorityQueue* pq, int index) {
      }
 }
 
-// ------------------------------------------------------------
 // Q2.1 (1) - Insertion
-// ------------------------------------------------------------
 void pq_insert(PriorityQueue* pq, Patient patientRecord) {
      if (pq->patientCount >= MAX_PATIENTS) {
           std::cout << "  [ERROR] Triage queue is full. Patient "
                     << patientRecord.patientID << " not added.\n";
+          return;
+     }
+
+     // Acuity must be in the clinical range 1 (low) to 100 (critical)
+     if (patientRecord.acuityScore < 1 || patientRecord.acuityScore > 100) {
+          std::cout << "  [ERROR] Invalid acuity " << patientRecord.acuityScore
+                    << " for patient " << patientRecord.patientID
+                    << " (must be 1-100). Not added.\n";
           return;
      }
 
@@ -93,9 +91,7 @@ void pq_insert(PriorityQueue* pq, Patient patientRecord) {
      bubble_up(pq, landingPos);                  // restore the heap rule
 }
 
-// ------------------------------------------------------------
 // Q2.1 (2) - Extraction of the most urgent patient
-// ------------------------------------------------------------
 Patient extract_max(PriorityQueue* pq) {
      if (pq->patientCount == 0) {
           std::cout << "  [ERROR] Triage queue is empty. Nothing to extract.\n";
@@ -112,12 +108,10 @@ Patient extract_max(PriorityQueue* pq) {
      return mostUrgent;
 }
 
-// ------------------------------------------------------------
 // Heapsort, in place
 // Repeat: swap root (max) with the last active cell, shrink the heap by
 // one, sift the new root down. The max values pile up at the back.
-// Time: O(n log n)   Extra space: O(1)
-// ------------------------------------------------------------
+// Time: O(n log n)   Extra space: O(log n) call stack (recursive bubble_down); O(1) if iterative
 int heap_sort_in_place(PriorityQueue* pq) {
      int totalSorted = pq->patientCount;
      while (pq->patientCount > 1) {
@@ -129,9 +123,7 @@ int heap_sort_in_place(PriorityQueue* pq) {
      return totalSorted;
 }
 
-// ------------------------------------------------------------
 // Display helpers
-// ------------------------------------------------------------
 void printHeapArray(const PriorityQueue* pq) {
      std::cout << "  index : ";
      for (int pos = 0; pos < pq->patientCount; pos++) {

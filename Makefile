@@ -1,10 +1,8 @@
-# ============================================================
 # KCH-PMTS  |  Phase 1 Makefile (Modules 1 & 2)
 #   make / make all  -> builds ./kch_phase1 (demo driver)
 #   make test        -> builds and runs ./test_phase1
 #   make run         -> builds and runs the demo
 #   make clean       -> removes binaries and object files
-# ============================================================
 CXX      = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -g -Iinclude
 
