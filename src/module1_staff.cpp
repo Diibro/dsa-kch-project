@@ -1,18 +1,14 @@
-// ============================================================
 // KCH-PMTS  |  Module 1 : Staff Management & Dynamic Rostering
 // Doctors live in a fixed array; each doctor has a linked list of nurses.
-// ============================================================
 #include <iostream>
 #include <iomanip>
 #include <sstream>
 
 #include "module1_staff.h"
 
-// ------------------------------------------------------------
 // Q1.1 (1) - Doctor array insertion
 // The new doctor goes to index doctorCount (the first empty slot).
 // Time: O(n) because of the duplicate-ID check, O(1) for the insert itself.
-// ------------------------------------------------------------
 bool addDoctorToRoster(Doctor doctorRoster[], int& doctorCount,
                        int newID, const std::string& newName,
                        const std::string& newSpecialty) {
@@ -41,10 +37,8 @@ bool addDoctorToRoster(Doctor doctorRoster[], int& doctorCount,
      return true;
 }
 
-// ------------------------------------------------------------
 // Linear search through the used part of the array.
 // Returns the index, or -1 when the ID is not there.  Time: O(n)
-// ------------------------------------------------------------
 int findDoctorSlot(const Doctor doctorRoster[], int doctorCount, int wantedID) {
      for (int pos = 0; pos < doctorCount; pos++) {
           if (doctorRoster[pos].doctorID == wantedID) {
@@ -54,11 +48,9 @@ int findDoctorSlot(const Doctor doctorRoster[], int doctorCount, int wantedID) {
      return -1;
 }
 
-// ------------------------------------------------------------
 // Q1.1 (3) - Doctor array deletion
 // Steps: find -> free nurses -> shift left -> clear last slot -> count--
 // Time: O(n + k)  (n = doctors to shift, k = nurses to free)
-// ------------------------------------------------------------
 bool removeDoctorFromRoster(Doctor doctorRoster[], int& doctorCount, int targetID) {
      int foundAt = findDoctorSlot(doctorRoster, doctorCount, targetID);
      if (foundAt == -1) {
@@ -83,10 +75,8 @@ bool removeDoctorFromRoster(Doctor doctorRoster[], int& doctorCount, int targetI
      return true;
 }
 
-// ------------------------------------------------------------
 // Q1.2 (1) - Tail insertion
 // Walk to the last node, then link the new node after it.  Time: O(k)
-// ------------------------------------------------------------
 void appendNurseToTeam(Doctor& doc, int newNurseID,
                        const std::string& nurseName, const std::string& nurseShift) {
      // Create the node on the heap (it must live after this function ends)
@@ -111,11 +101,9 @@ void appendNurseToTeam(Doctor& doc, int newNurseID,
      doc.nurseCount++;
 }
 
-// ------------------------------------------------------------
 // Q1.2 (2) - Delete one nurse by ID
 // Edge cases: empty list, nurse at head, nurse in middle/tail, not found.
 // Time: O(k)
-// ------------------------------------------------------------
 bool removeNurseFromTeam(Doctor& doc, int targetNurseID) {
      // Edge case 1: empty list
      if (doc.nurseHead == nullptr) {
@@ -152,9 +140,7 @@ bool removeNurseFromTeam(Doctor& doc, int targetNurseID) {
      return false;
 }
 
-// ------------------------------------------------------------
 // Frees all nurse nodes of one doctor, one by one.  Time: O(k)
-// ------------------------------------------------------------
 void releaseNurseTeam(Doctor& doc) {
      Nurse* scanNode = doc.nurseHead;
      while (scanNode != nullptr) {
@@ -174,9 +160,7 @@ void clearWholeRoster(Doctor doctorRoster[], int& doctorCount) {
      doctorCount = 0;
 }
 
-// ------------------------------------------------------------
 // Display helpers
-// ------------------------------------------------------------
 void printNurseChain(const Doctor& doc) {
      std::cout << "  Dr. " << doc.name << " (" << doc.nurseCount << " nurses): HEAD";
      for (Nurse* scanNode = doc.nurseHead; scanNode != nullptr; scanNode = scanNode->next) {

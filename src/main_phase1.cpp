@@ -1,10 +1,8 @@
-// ============================================================
 // KCH-PMTS  |  Phase 1 driver (Modules 1 & 2)
 // Runs the exact scenarios from the project specification and prints
 // every step so the output can be used directly as report traces.
 // Group: Dushime Brother (dushimeb), Mukantwari Francoise (mfrancoi),
 //        Uwimbabazi Keza (ukeza)
-// ============================================================
 #include <iostream>
 #include <string>
 
@@ -23,9 +21,7 @@ static void showStep(const std::string& label) {
      std::cout << "\n--- " << label << " ---\n";
 }
 
-// ------------------------------------------------------------
 // MODULE 1 demo
-// ------------------------------------------------------------
 static void runStaffDemo() {
      Doctor hospitalRoster[MAX_DOCTORS];
      int rosterSize = 0;
@@ -100,9 +96,7 @@ static void runStaffDemo() {
      std::cout << "\n  All nurse memory released. doctorCount = " << rosterSize << "\n";
 }
 
-// ------------------------------------------------------------
 // MODULE 2 demo
-// ------------------------------------------------------------
 static void runTriageDemo() {
      PriorityQueue erQueue;
      triageTraceOn = true; // show each swap
